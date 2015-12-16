@@ -23,6 +23,14 @@ public class WinterUncover {
     static String path_pop = PropertiesUtil.getPath_pop();
 
     public static void main(String[] args) {
+        File file = new File(path_pop);
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
         try {
             PropertiesUtil.loadPropertiesFile();
             Connection con = DBConnection.getConnection();

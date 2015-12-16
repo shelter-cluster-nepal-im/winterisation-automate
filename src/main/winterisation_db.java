@@ -19,6 +19,15 @@ public class winterisation_db {
     static String winter_map_data_filename = PropertiesUtil.getWinter_map_data_filename();
 
     public static void main(String[] args) {
+        String path = winter_map_data_filename.substring(0, winter_map_data_filename.lastIndexOf("/")+1);
+        File file = new File(path);
+        if (!file.exists()) {
+            if (file.mkdir()) {
+                System.out.println("Directory is created!");
+            } else {
+                System.out.println("Failed to create directory!");
+            }
+        }
         con = DBConnection.getConnection();
         if (con != null) {
             try {
