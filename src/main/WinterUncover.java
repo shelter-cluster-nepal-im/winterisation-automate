@@ -169,7 +169,7 @@ public class WinterUncover {
                 bw.write("\n");
             }
             bw.close();
-            System.out.println("Population of Concern file created path : " + path_pop + "/pop_concern.csv");
+            System.out.println("Population of Concern file created path : " + path_pop + "pop_concern.csv");
         } catch (IOException e) {
             e.printStackTrace();
         }

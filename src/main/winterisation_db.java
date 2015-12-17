@@ -185,7 +185,7 @@ public class winterisation_db {
 //and finally execute the COPY command to the file with this method:
             cm.copyOut("COPY (" + query + ") TO STDOUT WITH CSV HEADER", fileOutputStream);
             stmt.execute(query);
-            System.out.println("Dataset For winterisation created Path : " + winter_map_data_filename);
+            System.out.println("Dataset For winterisation map created Path : " + winter_map_data_filename);
             fileOutputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
