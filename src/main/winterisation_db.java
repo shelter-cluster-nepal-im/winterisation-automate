@@ -156,8 +156,8 @@ public class winterisation_db {
             String line;
 //            Process p = Runtime.getRuntime().exec("psql -U postgres -d shelter -h localhost -f d://winterisation.sql");
             Runtime rt = Runtime.getRuntime();
-//            Process p = rt.exec(psql + command);
-            Process p = rt.exec(command);
+            Process p = rt.exec(psql + command);
+//            Process p = rt.exec(command);
             BufferedReader input
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
             while ((line = input.readLine()) != null) {
