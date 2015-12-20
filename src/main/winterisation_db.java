@@ -17,9 +17,13 @@ public class winterisation_db {
     static String psql = PropertiesUtil.getPsql();
     static String command = PropertiesUtil.getCommand();
     static String winter_map_data_filename = PropertiesUtil.getWinter_map_data_filename();
+    static String path_sql = PropertiesUtil.getPath_sql();
 
     public static void main(String[] args) {
-        String path = winter_map_data_filename.substring(0, winter_map_data_filename.lastIndexOf("/")+1);
+        String hostname = PropertiesUtil.getDbUrl();
+        hostname = hostname.substring(0, hostname.lastIndexOf(":"));
+        command = command.replaceAll("HOSTNAME", hostname);
+        String path = winter_map_data_filename.substring(0, winter_map_data_filename.lastIndexOf("/") + 1);
         File file = new File(path);
         if (!file.exists()) {
             if (file.mkdir()) {
@@ -86,6 +90,8 @@ public class winterisation_db {
                 System.out.println("Inserting Winterisation into the winterisation_db table...");
                 br = new BufferedReader(new FileReader(path_winter_db));
                 int i = 0;
+                String insert = "INSERT INTO winterisation_db VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                pstmt = con.prepareStatement(insert);
                 while ((sCurrentLine = br.readLine()) != null) {
                     if (i != 0) {
 //                        System.out.println(sCurrentLine);
@@ -108,8 +114,6 @@ public class winterisation_db {
                             } else {
                                 comments = "";
                             }
-                            String insert = "INSERT INTO winterisation_db VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                            pstmt = con.prepareStatement(insert);
                             pstmt.setString(1, dist_code);
                             pstmt.setString(2, vdc_code);
                             pstmt.setString(3, district);
@@ -127,7 +131,8 @@ public class winterisation_db {
                             pstmt.setString(11, act_state);
                             pstmt.setString(12, edit_dt);
                             pstmt.setString(13, comments);
-                            int result = pstmt.executeUpdate();
+                            pstmt.addBatch();
+//                            int result = pstmt.executeUpdate();
                             System.out.println("Row" + i);
                         }
                     } else {
@@ -135,8 +140,10 @@ public class winterisation_db {
                     }
                     i++;
                 }
+                int[] result = pstmt.executeBatch();
+                pstmt.close();
 //                int[] updateCounts = pstmt.executeBatch();
-//                System.out.println(updateCounts + " Rows inserted");
+                System.out.println(result.length + " Rows inserted");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -152,11 +159,16 @@ public class winterisation_db {
     }
 
     private static void update_winterisation() {
+        System.out.println("Updating winterisation table");
+        File f = new File(path_sql);
+        String abs_path = f.getAbsolutePath();
+        String sql_command = psql + command + " " + abs_path;
         try {
             String line;
 //            Process p = Runtime.getRuntime().exec("psql -U postgres -d shelter -h localhost -f d://winterisation.sql");
             Runtime rt = Runtime.getRuntime();
-            Process p = rt.exec(psql + command);
+            Process p = rt.exec(sql_command);
+            System.out.println(sql_command);
 //            Process p = rt.exec(command);
             BufferedReader input
                     = new BufferedReader(new InputStreamReader(p.getInputStream()));
