@@ -143,7 +143,7 @@ public class winterisation_db {
                 int[] result = pstmt.executeBatch();
                 pstmt.close();
 //                int[] updateCounts = pstmt.executeBatch();
-                System.out.println(result.length + " Rows inserted");
+                System.out.println(result.length + " Rows inserted into winterisation_db");
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
@@ -184,6 +184,7 @@ public class winterisation_db {
     private static void export_winterisation(Connection con) {
         Statement stmt;
         String query;
+        System.out.println("Preparing to export winterisation dataset.");
         try {
             stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,
                     ResultSet.CONCUR_UPDATABLE);
