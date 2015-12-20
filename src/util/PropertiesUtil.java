@@ -22,7 +22,12 @@ public class PropertiesUtil {
     static String path_Ward;
     static String path_reach;
     static String path_pop;
+    static String path_sql;
 
+    public static String getPath_sql() {
+        return path_sql;
+    }
+    
     public static String getUsername() {
         return username;
     }
@@ -83,6 +88,8 @@ public class PropertiesUtil {
             path_Ward = prop.getProperty("path_Ward");
             path_reach = prop.getProperty("path_reach");
             path_pop = prop.getProperty("path_pop");
+            
+            path_sql = prop.getProperty("path_sql");
         } catch (IOException e) {
             e.printStackTrace();
         }
